@@ -35,12 +35,12 @@ func (a *Alien) SetCity(city *City) {
 func (a *Alien) Destroy() error {
 
 	if !a.IsAlive() {
-		return fmt.Errorf("Aline:Destroy - Already dead %d", a.Id)
+		return fmt.Errorf("Aline:Destroy - Already dead %d.", a.Id)
 	}
 
 	a.alive = false
 
-	fmt.Printf("Alien %d is dead", a.Id)
+	fmt.Printf("Alien %d is dead. \n", a.Id)
 	return nil
 }
 
@@ -83,7 +83,7 @@ func (a *Alien) Move() error {
 
 	// Set new city
 	a.city = candidates[i].To
-	fmt.Printf("Alien %d moved to city %s", a.Id, a.city.Name)
+	fmt.Printf("Alien %d moved to city %s. \n", a.Id, a.city.Name)
 
 	return nil
 }

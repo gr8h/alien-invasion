@@ -3,6 +3,7 @@ package simulator
 import (
 	"alien-invasion/internal"
 	"alien-invasion/pkg/helper"
+	"fmt"
 )
 
 const steps = 10000
@@ -28,14 +29,15 @@ func Simulate(N int64, filePath string) {
 
 	for i := 0; i < steps; i++ {
 
-		//world.Evaluate()
+		world.Evaluate()
 
 		var allTrapped = world.MoveAlien()
 
 		if allTrapped {
+			fmt.Println("All aliens are trapped, simulation is done...")
 			break
 		}
 	}
 
-	//world.PrintWorld()
+	world.PrintWorld()
 }

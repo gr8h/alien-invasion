@@ -37,7 +37,7 @@ func NewConnection(from *City, to *City, direction string) Connection {
 func (c *Connection) Destroy() {
 	c.alive = false
 
-	fmt.Printf("Connection between %s & %s is destroyed", c.From.Name, c.To.Name)
+	fmt.Printf("Connection between %s & %s is destroyed. \n", c.From.Name, c.To.Name)
 }
 
 func (c *Connection) IsAlive() bool {

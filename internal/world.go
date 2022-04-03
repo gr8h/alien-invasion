@@ -32,17 +32,24 @@ func NewWorld() World {
 
 func (w *World) Construct(simpleWorld map[string]map[string]string) {
 
-	// Create City
-	for name, _ := range simpleWorld {
-		var newCity City = NewCity(name)
-		w.Cities[name] = &newCity
-		w.CityNames = append(w.CityNames, name)
-	}
-
 	// Create Connections
-	for from, element := range simpleWorld {
+	for from, elements := range simpleWorld {
 
-		for dir, to := range element {
+		_, ok := w.Cities[from]
+		if !ok {
+			temp := NewCity(from)
+			w.Cities[from] = &temp
+			w.CityNames = append(w.CityNames, temp.Name)
+		}
+
+		for dir, to := range elements {
+
+			_, ok := w.Cities[to]
+			if !ok {
+				temp := NewCity(to)
+				w.Cities[to] = &temp
+				w.CityNames = append(w.CityNames, temp.Name)
+			}
 
 			var newConn = NewConnection(w.Cities[from], w.Cities[to], dir)
 			w.Connections = append(w.Connections, newConn)
@@ -111,6 +118,8 @@ func (w *World) Evaluate() {
 }
 
 func (w *World) PrintWorld() {
+
+	fmt.Println("Printing World...")
 
 	for _, city := range w.Cities {
 
