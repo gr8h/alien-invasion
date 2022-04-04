@@ -23,17 +23,23 @@ func Simulate(N int64, filePath string) {
 	// Initate world
 	world := internal.NewWorld()
 
-	world.Construct(simpleWorldMap)
+	err = world.Construct(simpleWorldMap)
+	Check(err)
 
-	world.InhabitAlien(int(N))
+	err = world.InhabitAlien(int(N))
+	Check(err)
 
 	for i := 0; i < steps; i++ {
 
-		world.Evaluate()
+		fmt.Printf("Iteration %d... \n", i)
 
-		var allTrapped = world.MoveAlien()
+		err = world.Evaluate()
+		Check(err)
 
-		if allTrapped {
+		zeroMpves, err := world.MoveAlien()
+		Check(err)
+
+		if zeroMpves {
 			fmt.Println("All aliens are trapped, simulation is done...")
 			break
 		}

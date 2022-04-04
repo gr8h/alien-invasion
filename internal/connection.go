@@ -34,10 +34,17 @@ func NewConnection(from *City, to *City, direction string) Connection {
 	return e
 }
 
-func (c *Connection) Destroy() {
+func (c *Connection) Destroy() error {
+
+	if !c.IsAlive() {
+		return fmt.Errorf("Connection:Destroy - Already destroyed.")
+	}
+
 	c.alive = false
 
 	fmt.Printf("Connection between %s & %s is destroyed. \n", c.From.Name, c.To.Name)
+
+	return nil
 }
 
 func (c *Connection) IsAlive() bool {

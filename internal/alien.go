@@ -50,6 +50,10 @@ func (a *Alien) CanMove() (bool, error) {
 		return false, fmt.Errorf("Aline:CanMove - No city found %d", a.Id)
 	}
 
+	if !a.IsAlive() {
+		return false, nil
+	}
+
 	// Out Connection
 	var hasOutConnection bool = false
 	for _, v := range a.city.Connections {
@@ -64,8 +68,13 @@ func (a *Alien) CanMove() (bool, error) {
 
 func (a *Alien) Move() error {
 
-	if a.city == nil {
+	//fmt.Println(a.GetCity().Name)
+	if a.GetCity() == nil {
 		return fmt.Errorf("Aline:Move - No city found %d", a.Id)
+	}
+
+	if !a.IsAlive() {
+		return nil
 	}
 
 	// Curret City Connections
@@ -81,8 +90,13 @@ func (a *Alien) Move() error {
 	rand.Seed(time.Now().UTC().UnixNano())
 	var i = rand.Intn(count)
 
+	// Remove alien
+	a.city.RemoveAlien(a)
+
 	// Set new city
 	a.city = candidates[i].To
+	candidates[i].To.AddAlien(a)
+
 	fmt.Printf("Alien %d moved to city %s. \n", a.Id, a.city.Name)
 
 	return nil

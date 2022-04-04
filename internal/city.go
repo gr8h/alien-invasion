@@ -5,7 +5,7 @@ import "fmt"
 type City struct {
 	Name        string
 	Connections []*Connection
-	Aliens      []*Alien
+	Aliens      map[int]*Alien
 
 	//Private
 	alive bool
@@ -14,7 +14,7 @@ type City struct {
 // Operations
 
 func NewCity(name string) City {
-	var e City = City{name, nil, nil, true}
+	var e City = City{name, nil, make(map[int]*Alien), true}
 	return e
 }
 
@@ -27,7 +27,11 @@ func (c *City) Evaluate() (int, bool) {
 }
 
 func (c *City) AddAlien(a *Alien) {
-	c.Aliens = append(c.Aliens, a)
+	c.Aliens[a.Id] = a
+}
+
+func (c *City) RemoveAlien(a *Alien) {
+	delete(c.Aliens, a.Id)
 }
 
 func (c *City) AddConnection(conn *Connection) {
@@ -55,7 +59,11 @@ func (c *City) Destroy() error {
 	return nil
 }
 
-func (c *City) HasTrappedAliens() bool {
+func (c *City) HasTrappedAliens() (bool, error) {
+
+	if !c.IsAlive() {
+		return false, fmt.Errorf("City:Destroy - Already destroyed %s", c.Name)
+	}
 
 	// Out Connection
 	var hasOutConnection bool = false
@@ -75,5 +83,5 @@ func (c *City) HasTrappedAliens() bool {
 		}
 	}
 
-	return hasAliveAliens && !hasOutConnection
+	return hasAliveAliens && !hasOutConnection, nil
 }

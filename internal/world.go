@@ -30,13 +30,13 @@ func NewWorld() World {
 	return e
 }
 
-func (w *World) Construct(simpleWorld map[string]map[string]string) {
+func (w *World) Construct(simpleWorld map[string]map[string]string) error {
 
 	// Create Connections
 	for from, elements := range simpleWorld {
 
-		_, ok := w.Cities[from]
-		if !ok {
+		_, found := w.Cities[from]
+		if !found {
 			temp := NewCity(from)
 			w.Cities[from] = &temp
 			w.CityNames = append(w.CityNames, temp.Name)
@@ -44,8 +44,8 @@ func (w *World) Construct(simpleWorld map[string]map[string]string) {
 
 		for dir, to := range elements {
 
-			_, ok := w.Cities[to]
-			if !ok {
+			_, found := w.Cities[to]
+			if !found {
 				temp := NewCity(to)
 				w.Cities[to] = &temp
 				w.CityNames = append(w.CityNames, temp.Name)
@@ -58,9 +58,11 @@ func (w *World) Construct(simpleWorld map[string]map[string]string) {
 			w.Cities[to].AddConnection(&newConn)
 		}
 	}
+
+	return nil
 }
 
-func (w *World) InhabitAlien(n int) {
+func (w *World) InhabitAlien(n int) error {
 
 	// Create Aline
 	for i := 0; i < n; i++ {
@@ -79,42 +81,53 @@ func (w *World) InhabitAlien(n int) {
 
 		w.Aliens = append(w.Aliens, newAline)
 	}
+
+	return nil
 }
 
-func (w *World) MoveAlien() bool {
+func (w *World) MoveAlien() (bool, error) {
 
 	var moveCount int = 0
 
 	for i := range w.Aliens {
-		var alien Alien = w.Aliens[i]
+		var alien *Alien = &w.Aliens[i]
+
+		if !alien.IsAlive() {
+			continue
+		}
 
 		canMove, err := alien.CanMove()
 		Check(err)
 
+		// If no moves are taken, this means that all aliens are trapped
 		if canMove {
-			moveCount += 1
-
 			err := alien.Move()
 			Check(err)
+
+			moveCount += 1
 		}
 
 	}
 
-	return moveCount > 0
+	return moveCount == 0, nil
 }
 
-func (w *World) Evaluate() {
+func (w *World) Evaluate() error {
+
 	// Evaluate City
 
 	for _, city := range w.Cities {
 
+		// If city is alive and alens in the city is greater than two, then destry the city
 		alienCount, isAlive := city.Evaluate()
 
-		if isAlive == true && alienCount >= 2 {
+		if isAlive && alienCount >= 2 {
 			err := city.Destroy()
 			Check(err)
 		}
 	}
+
+	return nil
 }
 
 func (w *World) PrintWorld() {
@@ -123,18 +136,16 @@ func (w *World) PrintWorld() {
 
 	for _, city := range w.Cities {
 
+		var sb strings.Builder
+
 		if !city.IsAlive() {
 			continue
 		}
 
-		var cityName string = city.Name
-
-		var sb strings.Builder
-		sb.WriteString(cityName)
+		sb.WriteString(city.Name)
 
 		for _, conn := range city.Connections {
-
-			if conn.From.Name == cityName && conn.IsAlive() {
+			if conn.IsAlive() && conn.From.Name == city.Name {
 				sb.WriteString(fmt.Sprintf(" %s=%s", conn.Direction, conn.To.Name))
 			}
 		}
