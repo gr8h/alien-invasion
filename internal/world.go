@@ -15,10 +15,12 @@ type World struct {
 	CityNames []string
 }
 
-func Check(e error) {
-	if e != nil {
-		panic(e)
-	}
+// Defaults
+var oppositeDirection = map[string]string{
+	"north": "south",
+	"east":  "west",
+	"south": "north",
+	"west":  "east",
 }
 
 func init() {
@@ -28,6 +30,41 @@ func init() {
 func NewWorld() World {
 	var e World = World{make(map[string]*City), nil, nil, nil}
 	return e
+}
+
+func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error {
+
+	var tempMap map[string][]string
+	tempMap = make(map[string][]string)
+
+	for from, elements := range simpleWorld {
+		for direction, to := range elements {
+			var key string
+			if from > to {
+				key = fmt.Sprintf("%s#%s", from, to)
+			} else {
+				key = fmt.Sprintf("%s#%s", to, from)
+			}
+			tempMap[key] = append(tempMap[key], direction)
+		}
+	}
+
+	for cityPair, directions := range tempMap {
+
+		if len(directions) < 2 {
+			return fmt.Errorf(fmt.Sprintf("ValidateMap: Missing Connection between %s", cityPair))
+		}
+
+		if len(directions) > 2 {
+			return fmt.Errorf(fmt.Sprintf("ValidateMap: Extra Connection between %s", cityPair))
+		}
+
+		if strings.Compare(directions[0], oppositeDirection[directions[1]]) != 0 {
+			return fmt.Errorf(fmt.Sprintf("ValidateMap: Wrong Direction between %s", cityPair))
+		}
+	}
+
+	return nil
 }
 
 func (w *World) Construct(simpleWorld map[string]map[string]string) error {

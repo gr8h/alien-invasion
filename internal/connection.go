@@ -4,19 +4,6 @@ import (
 	"fmt"
 )
 
-// Const
-const North string = "north"
-const East string = "east"
-const South string = "south"
-const West string = "west"
-
-var oppositeDirection = map[string]string{
-	North: South,
-	East:  West,
-	South: North,
-	West:  East,
-}
-
 // Struct
 type Connection struct {
 	From      *City
@@ -30,6 +17,10 @@ type Connection struct {
 // Operations
 
 func NewConnection(from *City, to *City, direction string) Connection {
+
+	_, _, err := validateConnection(from, to, direction)
+	Check(err)
+
 	var e Connection = Connection{from, to, direction, true}
 	return e
 }
@@ -49,4 +40,23 @@ func (c *Connection) Destroy() error {
 
 func (c *Connection) IsAlive() bool {
 	return c.alive
+}
+
+func validateConnection(from *City, to *City, direction string) (bool, *Connection, error) {
+
+	notvalid, conn := from.contains(to)
+	if notvalid {
+		return false, conn, fmt.Errorf(fmt.Sprintf("validateConnection f - Connection already exist %s %s %s.", conn.From.Name, conn.Direction, conn.To.Name))
+	}
+
+	return true, nil, nil
+}
+
+func (from *City) contains(city *City) (bool, *Connection) {
+	for _, a := range from.Connections {
+		if a.To == city {
+			return true, a
+		}
+	}
+	return false, nil
 }

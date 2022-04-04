@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-const steps = 10000
+const steps = 10
 
 func Check(e error) {
 	if e != nil {
@@ -22,6 +22,9 @@ func Simulate(N int64, filePath string) {
 
 	// Initate world
 	world := internal.NewWorld()
+
+	err = world.ValidateMap(simpleWorldMap)
+	Check(err)
 
 	err = world.Construct(simpleWorldMap)
 	Check(err)
@@ -40,7 +43,7 @@ func Simulate(N int64, filePath string) {
 		Check(err)
 
 		if zeroMpves {
-			fmt.Println("All aliens are trapped, simulation is done...")
+			fmt.Println("All aliens are trapped/dead, simulation is done...")
 			break
 		}
 	}
