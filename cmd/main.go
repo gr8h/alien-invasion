@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func Check(e error) {
+func check(e error) {
 	if e != nil {
 		panic(e)
 	}
@@ -20,7 +20,7 @@ func main() {
 	if len(argsWithoutProg) == 2 {
 
 		N, err := strconv.ParseInt(argsWithoutProg[0], 6, 12)
-		Check(err)
+		check(err)
 
 		filePath := argsWithoutProg[1]
 

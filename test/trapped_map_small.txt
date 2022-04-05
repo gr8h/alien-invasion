@@ -1,0 +1,2 @@
+Foo north=Bar
+Bar south=Foo

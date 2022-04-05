@@ -87,6 +87,11 @@ func (a *Alien) Move() error {
 
 	// Get Rand City
 	var count int = len(candidates)
+
+	if count == 0 {
+		return nil
+	}
+
 	rand.Seed(time.Now().UTC().UnixNano())
 	var i = rand.Intn(count)
 

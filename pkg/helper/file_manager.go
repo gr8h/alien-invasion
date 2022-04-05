@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Check(e error) {
+func check(e error) {
 	if e != nil {
 		panic(e)
 	}
@@ -16,7 +16,7 @@ func ReadWorldMapFile(filePath string) (map[string]map[string]string, error) {
 
 	f, err := os.Open(filePath)
 
-	Check(err)
+	check(err)
 
 	defer f.Close()
 

@@ -134,12 +134,12 @@ func (w *World) MoveAlien() (bool, error) {
 		}
 
 		canMove, err := alien.CanMove()
-		Check(err)
+		check(err)
 
 		// If no moves are taken, this means that all aliens are trapped
 		if canMove {
 			err := alien.Move()
-			Check(err)
+			check(err)
 
 			moveCount += 1
 		}
@@ -160,7 +160,7 @@ func (w *World) Evaluate() error {
 
 		if isAlive && alienCount >= 2 {
 			err := city.Destroy()
-			Check(err)
+			check(err)
 		}
 	}
 

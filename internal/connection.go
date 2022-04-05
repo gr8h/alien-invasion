@@ -19,7 +19,7 @@ type Connection struct {
 func NewConnection(from *City, to *City, direction string) Connection {
 
 	_, _, err := validateConnection(from, to, direction)
-	Check(err)
+	check(err)
 
 	var e Connection = Connection{from, to, direction, true}
 	return e

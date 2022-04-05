@@ -8,7 +8,7 @@ import (
 
 const steps = 10
 
-func Check(e error) {
+func check(e error) {
 	if e != nil {
 		panic(e)
 	}
@@ -18,29 +18,29 @@ func Simulate(N int64, filePath string) {
 
 	// Read File
 	simpleWorldMap, err := helper.ReadWorldMapFile(filePath)
-	Check(err)
+	check(err)
 
 	// Initate world
-	world := internal.NewWorld()
+	var world internal.World = internal.NewWorld()
 
 	err = world.ValidateMap(simpleWorldMap)
-	Check(err)
+	check(err)
 
 	err = world.Construct(simpleWorldMap)
-	Check(err)
+	check(err)
 
 	err = world.InhabitAlien(int(N))
-	Check(err)
+	check(err)
 
 	for i := 0; i < steps; i++ {
 
 		fmt.Printf("Iteration %d... \n", i)
 
 		err = world.Evaluate()
-		Check(err)
+		check(err)
 
 		zeroMpves, err := world.MoveAlien()
-		Check(err)
+		check(err)
 
 		if zeroMpves {
 			fmt.Println("All aliens are trapped/dead, simulation is done...")
