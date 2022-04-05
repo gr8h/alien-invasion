@@ -17,8 +17,7 @@ The aliens are placed randomy in the map, and they move randomly following valid
 * For every iteration all aliens moves unless the alien is trapped
 * The simulation ends if 
   * the number of iterations are completed 
-  * or if all aliens are trapped
-  * or all cities are destroyed
+  * if all aliens are trapped
 
 
 ## Getting started
@@ -56,8 +55,14 @@ Bee
 ```
 
 ## Run Tests
+* Run test cases
 ```bash
 cd internal
 go test
-go test -coverprofile=coverage.out 
+```
+* Generate coverage report
+```bash
+go test -coverprofile=coverage.out # Generate coverage file
+go tool cover -html=coverage.out # Open coverage report
+go tool cover -html=coverage.out -o coverage.html # Save the coverage report file
 ```
