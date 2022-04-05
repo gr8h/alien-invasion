@@ -14,22 +14,23 @@ func check(e error) {
 	}
 }
 
-const MaxUint = ^uint(0)
-const MaxInt = int(MaxUint >> 1)
+const defaultN = 2
+const defaultSteps = 10000
 
 func main() {
 
 	argsWithoutProg := os.Args[1:]
 
-	var N int64 = 5
+	var N int64
 	filePath, err := filepath.Abs("../test/valid_map.txt")
 	check(err)
 
-	if len(argsWithoutProg) == 1 {
+	if len(argsWithoutProg) == 0 {
+		N = defaultN
+	} else if len(argsWithoutProg) == 1 {
 		N, err = strconv.ParseInt(argsWithoutProg[0], 6, 12)
 		check(err)
 	} else if len(argsWithoutProg) == 2 {
-
 		N, err = strconv.ParseInt(argsWithoutProg[0], 6, 12)
 		check(err)
 
@@ -38,10 +39,10 @@ func main() {
 		}
 
 		filePath = argsWithoutProg[1]
-
 	} else {
-		fmt.Println("Please enter valid arguments. \n Number of alliens follwed by the file name. \n ex: 50 ../../map1.txt")
+		err := fmt.Errorf("Please enter valid arguments! ```go run cmd/main.go [NumberOfAliens] [FilePath]```")
+		check(err)
 	}
 
-	simulator.Simulate(N, filePath)
+	simulator.Simulate(N, filePath, defaultSteps)
 }

@@ -6,15 +6,13 @@ import (
 	"fmt"
 )
 
-const steps = 10
-
 func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-func Simulate(N int64, filePath string) {
+func Simulate(N int64, filePath string, steps int) {
 
 	// Read File
 	simpleWorldMap, err := helper.ReadWorldMapFile(filePath)
@@ -34,7 +32,7 @@ func Simulate(N int64, filePath string) {
 
 	for i := 0; i < steps; i++ {
 
-		fmt.Printf("Iteration %d... \n", i)
+		//fmt.Printf("Iteration %d... \n", i)
 
 		err = world.Evaluate()
 		check(err)
@@ -47,6 +45,8 @@ func Simulate(N int64, filePath string) {
 			break
 		}
 	}
+
+	fmt.Println(fmt.Sprintf("%d Steps has been taken!", steps))
 
 	world.PrintWorld()
 }
