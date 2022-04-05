@@ -18,7 +18,7 @@ type Alien struct {
 
 /*
 - Generate new object with default values
-Takes: Alien Id
+Parameters: Alien Id
 Returns: New object
 */
 func NewAlien(Id int) Alien {

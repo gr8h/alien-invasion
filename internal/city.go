@@ -15,7 +15,7 @@ type City struct {
 
 /*
 - Generate new object with default values
-Takes: City Name
+Parameters: City Name
 Returns: New object
 */
 func NewCity(name string) City {

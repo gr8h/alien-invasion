@@ -97,7 +97,7 @@ type Alien struct {
 
 /*
 - Generate new object with default values
-Takes: Alien Id
+Parameters: Alien Id
 Returns: New object
 */
 func NewAlien(Id int) Alien <span class="cov8" title="1">{
@@ -220,7 +220,7 @@ type City struct {
 
 /*
 - Generate new object with default values
-Takes: City Name
+Parameters: City Name
 Returns: New object
 */
 func NewCity(name string) City <span class="cov8" title="1">{
@@ -228,26 +228,32 @@ func NewCity(name string) City <span class="cov8" title="1">{
         return e
 }</span>
 
+// Check if city is alive
 func (a *City) IsAlive() bool <span class="cov8" title="1">{
         return a.alive
 }</span>
 
+// Get the city status
 func (c *City) Evaluate() (int, bool) <span class="cov8" title="1">{
         return len(c.Aliens), c.IsAlive()
 }</span>
 
+// Add an alien to the city
 func (c *City) AddAlien(a *Alien) <span class="cov8" title="1">{
         c.Aliens[a.Id] = a
 }</span>
 
+// Remove an alien from the city
 func (c *City) RemoveAlien(a *Alien) <span class="cov8" title="1">{
         delete(c.Aliens, a.Id)
 }</span>
 
+// Add a connection between cities
 func (c *City) AddConnection(conn *Connection) <span class="cov8" title="1">{
         c.Connections = append(c.Connections, conn)
 }</span>
 
+// Destro the city, connections and aliens
 func (c *City) Destroy() error <span class="cov8" title="1">{
 
         if !c.IsAlive() </span><span class="cov0" title="0">{
@@ -270,6 +276,7 @@ func (c *City) Destroy() error <span class="cov8" title="1">{
         return nil</span>
 }
 
+// Check if the city is alive and has alien whom are trapped
 func (c *City) HasTrappedAliens() (bool, error) <span class="cov8" title="1">{
 
         if !c.IsAlive() </span><span class="cov0" title="0">{
@@ -374,7 +381,7 @@ type Connection struct {
 
 /*
 - Generate new object with default values
-Takes: City fron, City To and Direction (north, south, west, east)
+Parameters: City fron, City To and Direction (north, south, west, east)
 Returns: New object
 */
 func NewConnection(from *City, to *City, direction string) Connection <span class="cov8" title="1">{

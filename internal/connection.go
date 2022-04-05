@@ -18,7 +18,7 @@ type Connection struct {
 
 /*
 - Generate new object with default values
-Takes: City fron, City To and Direction (north, south, west, east)
+Parameters: City fron, City To and Direction (north, south, west, east)
 Returns: New object
 */
 func NewConnection(from *City, to *City, direction string) Connection {
