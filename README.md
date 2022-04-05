@@ -45,7 +45,7 @@ go run cmd/main.go 10
 ```
 * Output example
 ```bash
-Bar has been destroyed! 
+Bar has been destroyed by 1 2! 
 All aliens are trapped/dead, simulation is done...
 Baz east=Foo
 Foo west=Baz south=Qu-ux

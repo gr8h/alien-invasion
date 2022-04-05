@@ -45,11 +45,7 @@ func Simulate(N int64, filePath string, steps int) {
 
 		//fmt.Printf("Iteration %d... \n", i)
 
-		hasAliveCity := world.Evaluate()
-		if !hasAliveCity {
-			fmt.Println("All cities are destroyed, simulation is done...")
-			break
-		}
+		world.Evaluate()
 
 		zeroMpves, err := world.MoveAliens()
 		check(err)
