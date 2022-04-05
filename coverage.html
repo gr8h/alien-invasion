@@ -55,15 +55,15 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">alien-invasion/internal/alien.go (80.0%)</option>
+				<option value="file0">alien-invasion/internal/alien.go (87.5%)</option>
 				
-				<option value="file1">alien-invasion/internal/city.go (82.8%)</option>
+				<option value="file1">alien-invasion/internal/city.go (83.9%)</option>
 				
 				<option value="file2">alien-invasion/internal/common.go (73.3%)</option>
 				
-				<option value="file3">alien-invasion/internal/connection.go (84.2%)</option>
+				<option value="file3">alien-invasion/internal/connection.go (88.9%)</option>
 				
-				<option value="file4">alien-invasion/internal/world.go (78.7%)</option>
+				<option value="file4">alien-invasion/internal/world.go (78.9%)</option>
 				
 				</select>
 			</div>
@@ -94,27 +94,37 @@ type Alien struct {
 }
 
 // Operations
+
+/*
+- Generate new object with default values
+Takes: Alien Id
+Returns: New object
+*/
 func NewAlien(Id int) Alien <span class="cov8" title="1">{
         var e Alien = Alien{Id, false, true, nil}
         return e
 }</span>
 
+// Check if alien is alive
 func (a *Alien) IsAlive() bool <span class="cov8" title="1">{
         return a.alive
 }</span>
 
+// Get the current alien city
 func (a *Alien) GetCity() *City <span class="cov8" title="1">{
         return a.city
 }</span>
 
+// Change the alien city
 func (a *Alien) SetCity(city *City) <span class="cov8" title="1">{
         a.city = city
 }</span>
 
+// Destroy the alien
 func (a *Alien) Destroy() error <span class="cov8" title="1">{
 
-        if !a.IsAlive() </span><span class="cov0" title="0">{
-                return fmt.Errorf("Aline:Destroy - Already dead %d.", a.Id)
+        if !a.IsAlive() </span><span class="cov8" title="1">{
+                return fmt.Errorf("Aline:Destroy - Already dead %d", a.Id)
         }</span>
 
         <span class="cov8" title="1">a.alive = false
@@ -125,9 +135,10 @@ func (a *Alien) Destroy() error <span class="cov8" title="1">{
         <span class="cov8" title="1">return nil</span>
 }
 
+// Check if the alien can move, or the alien is trapped or dead
 func (a *Alien) CanMove() (bool, error) <span class="cov8" title="1">{
 
-        if a.city == nil </span><span class="cov0" title="0">{
+        if a.city == nil </span><span class="cov8" title="1">{
                 return false, fmt.Errorf("Aline:CanMove - No city found %d", a.Id)
         }</span>
 
@@ -147,10 +158,11 @@ func (a *Alien) CanMove() (bool, error) <span class="cov8" title="1">{
         <span class="cov8" title="1">return hasOutConnection, nil</span>
 }
 
+// Move the alien to a random city where connection exists and is valid
 func (a *Alien) Move() error <span class="cov8" title="1">{
 
         //fmt.Println(a.GetCity().Name)
-        if a.GetCity() == nil </span><span class="cov0" title="0">{
+        if a.GetCity() == nil </span><span class="cov8" title="1">{
                 return fmt.Errorf("Aline:Move - No city found %d", a.Id)
         }</span>
 
@@ -206,6 +218,11 @@ type City struct {
 
 // Operations
 
+/*
+- Generate new object with default values
+Takes: City Name
+Returns: New object
+*/
 func NewCity(name string) City <span class="cov8" title="1">{
         var e City = City{name, nil, make(map[int]*Alien), true}
         return e
@@ -243,11 +260,12 @@ func (c *City) Destroy() error <span class="cov8" title="1">{
                 v.Destroy()
         }</span>
 
-        <span class="cov8" title="1">for _, v := range c.Aliens </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">fmt.Printf("%s has been destroyed by aliens ", c.Name)
+        for _, v := range c.Aliens </span><span class="cov8" title="1">{
+                fmt.Printf("%d ", v.Id)
                 v.Destroy()
         }</span>
-
-        <span class="cov8" title="1">fmt.Printf("%s has been destroyed! \n", c.Name)
+        <span class="cov8" title="1">fmt.Printf("!\n")
 
         return nil</span>
 }
@@ -354,15 +372,17 @@ type Connection struct {
 
 // Operations
 
+/*
+- Generate new object with default values
+Takes: City fron, City To and Direction (north, south, west, east)
+Returns: New object
+*/
 func NewConnection(from *City, to *City, direction string) Connection <span class="cov8" title="1">{
-
-        _, _, err := validateConnection(from, to, direction)
-        check(err)
-
         var e Connection = Connection{from, to, direction, true}
         return e
 }</span>
 
+// Destory the connection
 func (c *Connection) Destroy() error <span class="cov8" title="1">{
 
         if !c.IsAlive() </span><span class="cov8" title="1">{
@@ -378,28 +398,10 @@ func (c *Connection) Destroy() error <span class="cov8" title="1">{
         <span class="cov8" title="1">return nil</span>
 }
 
+// Check if the connection is alive
 func (c *Connection) IsAlive() bool <span class="cov8" title="1">{
         return c.alive
 }</span>
-
-func validateConnection(from *City, to *City, direction string) (bool, *Connection, error) <span class="cov8" title="1">{
-
-        notvalid, conn := from.contains(to)
-        if notvalid </span><span class="cov0" title="0">{
-                return false, conn, fmt.Errorf(fmt.Sprintf("validateConnection f - Connection already exist %s %s %s.", conn.From.Name, conn.Direction, conn.To.Name))
-        }</span>
-
-        <span class="cov8" title="1">return true, nil, nil</span>
-}
-
-func (from *City) contains(city *City) (bool, *Connection) <span class="cov8" title="1">{
-        for _, a := range from.Connections </span><span class="cov8" title="1">{
-                if a.To == city </span><span class="cov0" title="0">{
-                        return true, a
-                }</span>
-        }
-        <span class="cov8" title="1">return false, nil</span>
-}
 </pre>
 		
 		<pre class="file" id="file4" style="display: none">package internal
@@ -424,11 +426,19 @@ func init() <span class="cov8" title="1">{
         }</span>
 }
 
+/*
+- Generate new object with default values
+Returns: New object
+*/
 func NewWorld() World <span class="cov8" title="1">{
         var e World = World{make(map[string]*City), nil, nil}
         return e
 }</span>
 
+/*
+- Validate the map cities and connections
+Returns: an error if the map is not valid
+*/
 func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error <span class="cov8" title="1">{
 
         var tempMap map[string][]string
@@ -467,6 +477,7 @@ func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error <spa
         <span class="cov8" title="1">return nil</span>
 }
 
+// Take the valid map and construct the world cities and connections
 func (w *World) Construct(simpleWorld map[string]map[string]string) error <span class="cov8" title="1">{
 
         // Create Connections
@@ -498,6 +509,7 @@ func (w *World) Construct(simpleWorld map[string]map[string]string) error <span 
         <span class="cov8" title="1">return nil</span>
 }
 
+// Assign all aliens to a random city
 func (w *World) InhabitAlien(n int) error <span class="cov8" title="1">{
 
         // Create Aline
@@ -521,6 +533,7 @@ func (w *World) InhabitAlien(n int) error <span class="cov8" title="1">{
         <span class="cov8" title="1">return nil</span>
 }
 
+// Move all aliens in each iteration
 func (w *World) MoveAliens() (bool, error) <span class="cov8" title="1">{
 
         var moveCount int = 0
@@ -548,10 +561,11 @@ func (w *World) MoveAliens() (bool, error) <span class="cov8" title="1">{
         <span class="cov8" title="1">return moveCount == 0, nil</span>
 }
 
-func (w *World) Evaluate() error <span class="cov8" title="1">{
+// Evaluate the status of the world, to see if there are cities that should be destroyed, or all aliens are trapped
+func (w *World) Evaluate() bool <span class="cov8" title="1">{
 
         // Evaluate City
-
+        var hasAliveCity bool = false
         for _, city := range w.Cities </span><span class="cov8" title="1">{
 
                 // If city is alive and alens in the city is greater than two, then destry the city
@@ -563,9 +577,10 @@ func (w *World) Evaluate() error <span class="cov8" title="1">{
                 }</span>
         }
 
-        <span class="cov8" title="1">return nil</span>
+        <span class="cov8" title="1">return hasAliveCity</span>
 }
 
+// Print the world after simulation is done
 func (w *World) PrintWorld() <span class="cov0" title="0">{
 
         if showExtraMessages </span><span class="cov0" title="0">{

@@ -1,9 +1,8 @@
 # Mad Alien Invasion
 
-This is a simulation of aliens​ ​are​ ​about​ ​to​ ​invade​ ​the​ ​earth, the world map consists of cities each city is connected to other citities following a specific direction (north, south, east, west).
-The aliens are placed randomy in the map, and they move randomly following valid links between cities; if two or more aliens are found in one city the city, its connection and aliens are destroyed.
+This is a simulation of aliens​ who ​are​ ​about​ ​to​ ​invade​ ​the​ ​earth, the world map consists of cities each city is connected to other cities following a specific direction (north, south, east, west).
+The aliens are placed randomly on the map, and they move randomly following valid links between cities; if two or more aliens are found in one city, their connection and aliens are destroyed.
 
-- [Mad Alien Invasion](#mad-alien-invasion)
   - [Assumptions](#assumptions)
   - [Getting started](#getting-started)
   - [Setting up Dev](#setting-up-dev)
@@ -11,10 +10,10 @@ The aliens are placed randomy in the map, and they move randomly following valid
   - [Run Tests](#run-tests)
 
 ## Assumptions
-* The **city** names can only contain alphabits
-* The **connection/link** between two cities are not directed
+* The **city** names can only contain alphabets
+* The **connection/link** between two cities is not directed
 * If two or more than two **aliens** are in one city the city is destroyed
-* For every iteration all aliens moves unless the alien is trapped
+* For every iteration, all aliens move unless the alien is trapped
 * The simulation ends if 
   * the number of iterations are completed 
   * if all aliens are trapped
@@ -24,8 +23,8 @@ The aliens are placed randomy in the map, and they move randomly following valid
 * First install [GoLang](https://golang.org/doc/install)
 
 ## Setting up Dev
-* First parameter is NumberOfAliens, the **default** is 5.
-* Second parameter is FilePath, the **default** is the below map:
+* First parameter is NumberOfAliens, **default** is 2.
+* Second parameter is FilePath, **default** is the below map.
 
 ```bash
 Foo north=Bar west=Baz south=Qu-ux

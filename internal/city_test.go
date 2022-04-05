@@ -64,10 +64,8 @@ func TestCityDestroy_ShouldBeDestroyed_WhenTwoAliensInCity(t *testing.T) {
 	assert.Equal(t, 3, len(world.Cities))
 	assert.Equal(t, 3, len(world.Aliens))
 
-	err = world.Evaluate()
-	if err != nil {
-		t.Error(err)
-	}
+	hasAliveCity := world.Evaluate()
+	assert.Equal(t, false, hasAliveCity)
 
 	for _, c := range world.Cities {
 

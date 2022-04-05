@@ -16,15 +16,17 @@ type Connection struct {
 
 // Operations
 
+/*
+- Generate new object with default values
+Takes: City fron, City To and Direction (north, south, west, east)
+Returns: New object
+*/
 func NewConnection(from *City, to *City, direction string) Connection {
-
-	_, _, err := validateConnection(from, to, direction)
-	check(err)
-
 	var e Connection = Connection{from, to, direction, true}
 	return e
 }
 
+// Destory the connection
 func (c *Connection) Destroy() error {
 
 	if !c.IsAlive() {
@@ -40,25 +42,7 @@ func (c *Connection) Destroy() error {
 	return nil
 }
 
+// Check if the connection is alive
 func (c *Connection) IsAlive() bool {
 	return c.alive
-}
-
-func validateConnection(from *City, to *City, direction string) (bool, *Connection, error) {
-
-	notvalid, conn := from.contains(to)
-	if notvalid {
-		return false, conn, fmt.Errorf(fmt.Sprintf("validateConnection f - Connection already exist %s %s %s.", conn.From.Name, conn.Direction, conn.To.Name))
-	}
-
-	return true, nil, nil
-}
-
-func (from *City) contains(city *City) (bool, *Connection) {
-	for _, a := range from.Connections {
-		if a.To == city {
-			return true, a
-		}
-	}
-	return false, nil
 }

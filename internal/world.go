@@ -20,11 +20,19 @@ func init() {
 	}
 }
 
+/*
+- Generate new object with default values
+Returns: New object
+*/
 func NewWorld() World {
 	var e World = World{make(map[string]*City), nil, nil}
 	return e
 }
 
+/*
+- Validate the map cities and connections
+Returns: an error if the map is not valid
+*/
 func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error {
 
 	var tempMap map[string][]string
@@ -63,6 +71,7 @@ func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error {
 	return nil
 }
 
+// Take the valid map and construct the world cities and connections
 func (w *World) Construct(simpleWorld map[string]map[string]string) error {
 
 	// Create Connections
@@ -94,6 +103,7 @@ func (w *World) Construct(simpleWorld map[string]map[string]string) error {
 	return nil
 }
 
+// Assign all aliens to a random city
 func (w *World) InhabitAlien(n int) error {
 
 	// Create Aline
@@ -117,6 +127,7 @@ func (w *World) InhabitAlien(n int) error {
 	return nil
 }
 
+// Move all aliens in each iteration
 func (w *World) MoveAliens() (bool, error) {
 
 	var moveCount int = 0
@@ -144,10 +155,11 @@ func (w *World) MoveAliens() (bool, error) {
 	return moveCount == 0, nil
 }
 
-func (w *World) Evaluate() error {
+// Evaluate the status of the world, to see if there are cities that should be destroyed, or all aliens are trapped
+func (w *World) Evaluate() bool {
 
 	// Evaluate City
-
+	var hasAliveCity bool = false
 	for _, city := range w.Cities {
 
 		// If city is alive and alens in the city is greater than two, then destry the city
@@ -159,9 +171,10 @@ func (w *World) Evaluate() error {
 		}
 	}
 
-	return nil
+	return hasAliveCity
 }
 
+// Print the world after simulation is done
 func (w *World) PrintWorld() {
 
 	if showExtraMessages {

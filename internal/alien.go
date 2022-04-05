@@ -15,27 +15,37 @@ type Alien struct {
 }
 
 // Operations
+
+/*
+- Generate new object with default values
+Takes: Alien Id
+Returns: New object
+*/
 func NewAlien(Id int) Alien {
 	var e Alien = Alien{Id, false, true, nil}
 	return e
 }
 
+// Check if alien is alive
 func (a *Alien) IsAlive() bool {
 	return a.alive
 }
 
+// Get the current alien city
 func (a *Alien) GetCity() *City {
 	return a.city
 }
 
+// Change the alien city
 func (a *Alien) SetCity(city *City) {
 	a.city = city
 }
 
+// Destroy the alien
 func (a *Alien) Destroy() error {
 
 	if !a.IsAlive() {
-		return fmt.Errorf("Aline:Destroy - Already dead %d.", a.Id)
+		return fmt.Errorf("Aline:Destroy - Already dead %d", a.Id)
 	}
 
 	a.alive = false
@@ -46,6 +56,7 @@ func (a *Alien) Destroy() error {
 	return nil
 }
 
+// Check if the alien can move, or the alien is trapped or dead
 func (a *Alien) CanMove() (bool, error) {
 
 	if a.city == nil {
@@ -68,6 +79,7 @@ func (a *Alien) CanMove() (bool, error) {
 	return hasOutConnection, nil
 }
 
+// Move the alien to a random city where connection exists and is valid
 func (a *Alien) Move() error {
 
 	//fmt.Println(a.GetCity().Name)

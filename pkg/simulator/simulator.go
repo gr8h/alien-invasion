@@ -12,6 +12,17 @@ func check(e error) {
 	}
 }
 
+/*
+- Run the simulation
+-- Read the world map from a file
+-- Validate the map
+-- Construct the world
+-- Inhabit the aliens
+-- Iterate until steps are completed
+--- or until all aliens are trapped
+--- or until all cities are destroyed
+- Print the remaining cities
+*/
 func Simulate(N int64, filePath string, steps int) {
 
 	// Read File
@@ -34,8 +45,11 @@ func Simulate(N int64, filePath string, steps int) {
 
 		//fmt.Printf("Iteration %d... \n", i)
 
-		err = world.Evaluate()
-		check(err)
+		hasAliveCity := world.Evaluate()
+		if !hasAliveCity {
+			fmt.Println("All cities are destroyed, simulation is done...")
+			break
+		}
 
 		zeroMpves, err := world.MoveAliens()
 		check(err)
