@@ -8,27 +8,20 @@ import (
 )
 
 type World struct {
-	Cities      map[string]*City
-	Aliens      []Alien
-	Connections []Connection
+	Cities map[string]*City
+	Aliens []Alien
 
 	CityNames []string
 }
 
-// Defaults
-var oppositeDirection = map[string]string{
-	"north": "south",
-	"east":  "west",
-	"south": "north",
-	"west":  "east",
-}
-
 func init() {
-	fmt.Println("Initialize World...")
+	if showExtraMessages {
+		fmt.Println("Initialize World...")
+	}
 }
 
 func NewWorld() World {
-	var e World = World{make(map[string]*City), nil, nil, nil}
+	var e World = World{make(map[string]*City), nil, nil}
 	return e
 }
 
@@ -49,18 +42,21 @@ func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error {
 		}
 	}
 
-	for cityPair, directions := range tempMap {
+	for _, directions := range tempMap {
 
 		if len(directions) < 2 {
-			return fmt.Errorf(fmt.Sprintf("ValidateMap: Missing Connection between %s", cityPair))
+			//fmt.Errorf(fmt.Sprintf("ValidateMap: Missing Connection between %s", cityPair))
+			return fmt.Errorf("ValidateMap: Missing Connection")
 		}
 
 		if len(directions) > 2 {
-			return fmt.Errorf(fmt.Sprintf("ValidateMap: Extra Connection between %s", cityPair))
+			//fmt.Errorf(fmt.Sprintf("ValidateMap: Extra Connection between %s", cityPair))
+			return fmt.Errorf("ValidateMap: Extra Connection")
 		}
 
 		if strings.Compare(directions[0], oppositeDirection[directions[1]]) != 0 {
-			return fmt.Errorf(fmt.Sprintf("ValidateMap: Wrong Direction between %s", cityPair))
+			//fmt.Errorf(fmt.Sprintf("ValidateMap: Wrong Direction between %s", cityPair))
+			return fmt.Errorf("ValidateMap: Wrong Direction")
 		}
 	}
 
@@ -89,7 +85,6 @@ func (w *World) Construct(simpleWorld map[string]map[string]string) error {
 			}
 
 			var newConn = NewConnection(w.Cities[from], w.Cities[to], dir)
-			w.Connections = append(w.Connections, newConn)
 
 			w.Cities[from].AddConnection(&newConn)
 			w.Cities[to].AddConnection(&newConn)
@@ -122,7 +117,7 @@ func (w *World) InhabitAlien(n int) error {
 	return nil
 }
 
-func (w *World) MoveAlien() (bool, error) {
+func (w *World) MoveAliens() (bool, error) {
 
 	var moveCount int = 0
 
@@ -169,7 +164,9 @@ func (w *World) Evaluate() error {
 
 func (w *World) PrintWorld() {
 
-	fmt.Println("Printing World...")
+	if showExtraMessages {
+		fmt.Println("Printing World...")
+	}
 
 	for _, city := range w.Cities {
 

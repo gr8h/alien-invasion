@@ -54,7 +54,7 @@ func (c *City) Destroy() error {
 		v.Destroy()
 	}
 
-	fmt.Printf("City %s is destroyed. \n", c.Name)
+	fmt.Printf("%s has been destroyed! \n", c.Name)
 
 	return nil
 }

@@ -33,7 +33,9 @@ func (c *Connection) Destroy() error {
 
 	c.alive = false
 
-	fmt.Printf("Connection between %s & %s is destroyed. \n", c.From.Name, c.To.Name)
+	if showExtraMessages {
+		fmt.Printf("Connection between %s & %s is destroyed. \n", c.From.Name, c.To.Name)
+	}
 
 	return nil
 }

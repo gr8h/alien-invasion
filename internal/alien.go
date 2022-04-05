@@ -40,7 +40,9 @@ func (a *Alien) Destroy() error {
 
 	a.alive = false
 
-	fmt.Printf("Alien %d is dead. \n", a.Id)
+	if showExtraMessages {
+		fmt.Printf("Alien %d is dead. \n", a.Id)
+	}
 	return nil
 }
 
@@ -102,7 +104,9 @@ func (a *Alien) Move() error {
 	a.city = candidates[i].To
 	candidates[i].To.AddAlien(a)
 
-	fmt.Printf("Alien %d moved to city %s. \n", a.Id, a.city.Name)
+	if showExtraMessages {
+		fmt.Printf("Alien %d moved to city %s. \n", a.Id, a.city.Name)
+	}
 
 	return nil
 }

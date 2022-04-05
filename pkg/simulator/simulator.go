@@ -39,7 +39,7 @@ func Simulate(N int64, filePath string) {
 		err = world.Evaluate()
 		check(err)
 
-		zeroMpves, err := world.MoveAlien()
+		zeroMpves, err := world.MoveAliens()
 		check(err)
 
 		if zeroMpves {
