@@ -9,9 +9,8 @@ import (
 type Alien struct {
 	Id int
 
-	trapped bool
-	alive   bool
-	city    *City // By Referance
+	alive bool
+	city  *City // By Referance
 }
 
 // Operations
@@ -22,7 +21,7 @@ Parameters: Alien Id
 Returns: New object
 */
 func NewAlien(Id int) Alien {
-	var e Alien = Alien{Id, false, true, nil}
+	var e Alien = Alien{Id, false, nil}
 	return e
 }
 

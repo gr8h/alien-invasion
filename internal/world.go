@@ -53,17 +53,14 @@ func (w *World) ValidateMap(simpleWorld map[string]map[string]string) error {
 	for _, directions := range tempMap {
 
 		if len(directions) < 2 {
-			//fmt.Errorf(fmt.Sprintf("ValidateMap: Missing Connection between %s", cityPair))
 			return fmt.Errorf("ValidateMap: Missing Connection")
 		}
 
 		if len(directions) > 2 {
-			//fmt.Errorf(fmt.Sprintf("ValidateMap: Extra Connection between %s", cityPair))
 			return fmt.Errorf("ValidateMap: Extra Connection")
 		}
 
 		if strings.Compare(directions[0], oppositeDirection[directions[1]]) != 0 {
-			//fmt.Errorf(fmt.Sprintf("ValidateMap: Wrong Direction between %s", cityPair))
 			return fmt.Errorf("ValidateMap: Wrong Direction")
 		}
 	}
